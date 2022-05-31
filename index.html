@@ -18,19 +18,18 @@
     
     #main {
       float: left;
-      width: 50%;
-      height: 100%;
+      width: 100%;
+      height: 50%;
     }
     
     .input {
       float: left;
-      width: 50%;
-      border: 0;
-      height: 100%;
-    }
-    #html{
-      height: 100%;
       width: 100%;
+      border: 0;
+      height: 50%;
+    }
+    #html,#areaNumeracion{
+      height: 100%;
       border: 0;
       padding: 0;
       outline: none;
@@ -41,16 +40,57 @@
       padding: 10px;
       line-height: 20px;
     }
+    #areaNumeracion{
+      width: 2%;
+    }
+    #html{
+      width: 97%;
+    }
+    .colorHTML {
+      color: blue;
+    }
     </style>
   </head>
   
   <body>
     <div class="box">
-      <div class="input">
-        <textarea id="html"></textarea>
-      </div>
+        <form class="input">
+          <textarea id="areaNumeracion" readonly></textarea>
+          <textarea id="html" onkeyup="numeracion(event);"></textarea>
+        </form>
       <div id="main"></div>
     </div>
     <script src="./js/bundle.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/parser.js"></script>
+    <script src="./js/tokenizer.js"></script>
+    <script>
+      window.onload = function () {
+        numeracion();
+      };
+      function numeracion(e) {
+        let eArea = document.getElementById("areaNumeracion");
+        let eArea2 = document.getElementById("html");
+        let numeros = eArea2.value.split("\n").length;
+        let msj = "";
+        for (let i = 0; i < numeros; i++) {
+          msj += i + 1 + "\n";
+        }
+        eArea.value = msj;
+      }
+      numeracion();
+
+      var range = document.getElementsById("html");
+
+      for (var i = 0; i < range.length; i++) {
+        var matched = range[i].textContent.match(/<(.+?)>/g)
+        if (matched) {
+          matched.forEach(function(text) {
+            var newtext = text.substring(1, text.length - 1);
+            range[i].textContent = range[i].textContent.replace(text, '<span class="colorHTML">' + newtext + '</span>');
+          });
+        }
+      }
+    </script>
   </body>
 </html>
